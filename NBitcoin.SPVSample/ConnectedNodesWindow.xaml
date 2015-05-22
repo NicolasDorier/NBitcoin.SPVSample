@@ -1,0 +1,38 @@
+﻿<Window x:Class="NBitcoin.SPVSample.ConnectedNodesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ConnectedNodesWindow" SizeToContent="WidthAndHeight">
+    <Grid x:Name="root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ListView ItemsSource="{Binding Nodes}" SelectedItem="{Binding SelectedNode, Mode=TwoWay}" DisplayMemberPath="Name" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ListView>
+        <StackPanel Grid.Column="1" DataContext="{Binding SelectedNode}">
+            <StackPanel Orientation="Horizontal">
+                <Label>Version:</Label>
+                <Label Content="{Binding Version.UserAgent}"></Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Start height:</Label>
+                <Label Content="{Binding Version.StartHeight}"></Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Speed:</Label>
+                <Label Content="{Binding Speed}"></Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Latency (ms):</Label>
+                <Label Content="{Binding Latency}"></Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Connected at:</Label>
+                <Label Content="{Binding ConnectedAt}"></Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Last seen:</Label>
+                <Label Content="{Binding LastSeen}"></Label>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

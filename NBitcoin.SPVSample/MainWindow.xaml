@@ -1,0 +1,48 @@
+﻿<Window x:Class="NBitcoin.SPVSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid x:Name="root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+            <Label>Wallet</Label>
+            <ComboBox ItemsSource="{Binding Wallets}" MinWidth="100" DisplayMemberPath="Name" SelectedItem="{Binding SelectedWallet}"></ComboBox>
+            <Button  Click="Button_Click">Add</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Grid.Row="1">
+            <Label>Current address</Label>
+            <TextBox IsReadOnly="True" MinWidth="150" Text="{Binding SelectedWallet.CurrentAddress,Converter={StaticResource Base58}}"></TextBox>
+            <Label>
+                <Hyperlink Click="Hyperlink_Click_1">Copy</Hyperlink>
+            </Label>
+            <Button Click="Button_Click_1">Create a new address</Button>
+        </StackPanel>
+        <ListView Grid.Row="2" ItemsSource="{Binding SelectedWallet.Transactions}">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Amount"  DisplayMemberBinding="{Binding Balance}" ></GridViewColumn>
+                        <GridViewColumn Header="TransactionId"  DisplayMemberBinding="{Binding TransactionId}" ></GridViewColumn>
+                        <GridViewColumn Header="BlockId"  DisplayMemberBinding="{Binding BlockId}" ></GridViewColumn>
+                        <GridViewColumn Header="Confirmations"  DisplayMemberBinding="{Binding Confirmations}" ></GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Bottom">
+            <Label>Height</Label>
+            <Label Content="{Binding CurrentHeight}"></Label>
+            <Label Margin="10,0,0,0">
+                <Hyperlink Click="Hyperlink_Click">ConnectedNodes</Hyperlink>
+            </Label>
+            <Label Content="{Binding ConnectedNodes}"></Label>
+            <Label Margin="10,0,0,0"></Label>
+            <Label Content="{Binding Message}"></Label>
+        </StackPanel>
+    </Grid>
+</Window>
