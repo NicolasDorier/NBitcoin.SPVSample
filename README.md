@@ -18,8 +18,6 @@ All these data structures are "attached" to nodes discovered by NodesGroup by us
 * ChainBehavior listens new incoming blocks from a peer so it can keep the Chain in sync.
 * AddressManagerBehavior listens getaddr/addr messages and registers them for later use during the next peer discovery process.
 
-The Wallet class 
-
 This program periodically save the Chain, AddressManager, Wallet and Tracker.
 
 The implementation of TrackerBehavior is privacy friendly. All the wallets are sharing the same bloom filter, the bloom filter is preloaded with 1000 keys per wallet and never updated.
