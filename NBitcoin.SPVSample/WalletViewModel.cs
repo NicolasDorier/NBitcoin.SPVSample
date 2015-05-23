@@ -15,7 +15,7 @@ namespace NBitcoin.SPVSample
         public Wallet Wallet
         {
             get
-            {
+			{
                 return _Wallet;
             }
         }
