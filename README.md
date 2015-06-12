@@ -4,6 +4,9 @@ SPV wallet sample created with NBitcoin and WPF
 This is a simple program which show how to create multi sig (or not) SPV wallets with NBitcoin.
 It works on TestNet, please don't use this program in production, I do not handle any error condtions and store private keys in clear.
 
+Create a new wallet, generate a new address and try to send some money to this address from another testnet wallet.
+You'll see it appear in the list along with the confirmations. (I did not implement send feature, this is left as exercise :))
+
 In a nutshell, a SPV app is using several part of NBitcoin :
 
 * The NodesGroup which will keep connection to a group of nodes open
