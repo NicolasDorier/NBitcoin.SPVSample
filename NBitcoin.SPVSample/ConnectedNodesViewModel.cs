@@ -1,5 +1,6 @@
 ﻿using NBitcoin.Protocol;
 using NBitcoin.Protocol.Behaviors;
+using NBitcoin.SPV;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,15 +37,33 @@ namespace NBitcoin.SPVSample
             }
             set
             {
-                if (value != _Speed)
+                if(value != _Speed)
                 {
                     _Speed = value;
-                    if (PropertyChanged != null)
+                    if(PropertyChanged != null)
                         PropertyChanged(this, new PropertyChangedEventArgs("Speed"));
                 }
             }
         }
 
+
+        private int _CurrentProgress;
+        public int CurrentProgress
+        {
+            get
+            {
+                return _CurrentProgress;
+            }
+            set
+            {
+                if(value != _CurrentProgress)
+                {
+                    _CurrentProgress = value;
+                    if(PropertyChanged != null)
+                        PropertyChanged(this, new PropertyChangedEventArgs("CurrentProgress"));
+                }
+            }
+        }
 
         public VersionPayload Version
         {
@@ -58,19 +77,24 @@ namespace NBitcoin.SPVSample
         public void UpdateSpeed()
         {
             var snap = _Node.Counter.Snapshot();
-            if (_Snap != null)
+            if(_Snap != null)
             {
                 Speed = (snap - _Snap).ToString();
             }
             _Snap = snap;
             var behavior = _Node.Behaviors.Find<PingPongBehavior>();
-            if (behavior != null)
+            if(behavior != null)
             {
                 Latency = (int)behavior.Latency.TotalMilliseconds;
                 behavior.Probe();
             }
 
             LastSeen = _Node.LastSeen.LocalDateTime;
+
+            var tracker = _Node.Behaviors.Find<TrackerBehavior>();
+            var chain = _Node.Behaviors.Find<ChainBehavior>();
+            if(tracker.CurrentProgress != null)
+                CurrentProgress = chain.Chain.FindFork(tracker.CurrentProgress).Height;
         }
 
         private DateTime _LastSeen;
@@ -82,10 +106,10 @@ namespace NBitcoin.SPVSample
             }
             set
             {
-                if (value != _LastSeen)
+                if(value != _LastSeen)
                 {
                     _LastSeen = value;
-                    if (PropertyChanged != null)
+                    if(PropertyChanged != null)
                         PropertyChanged(this, new PropertyChangedEventArgs("LastSeen"));
                 }
             }
@@ -100,10 +124,10 @@ namespace NBitcoin.SPVSample
             }
             set
             {
-                if (value != _Latency)
+                if(value != _Latency)
                 {
                     _Latency = value;
-                    if (PropertyChanged != null)
+                    if(PropertyChanged != null)
                         PropertyChanged(this, new PropertyChangedEventArgs("Latency"));
                 }
             }
@@ -134,31 +158,33 @@ namespace NBitcoin.SPVSample
 
         private async void StartRefresh()
         {
-            while (!_Stop)
+            while(!_Stop)
             {
                 List<ConnectedNodeViewModel> included = new List<ConnectedNodeViewModel>();
-                foreach (var node in _Group.ConnectedNodes)
+                foreach(var node in _Group.ConnectedNodes)
                 {
                     var vm = Find(node);
-                    if (vm == null)
+                    if(vm == null)
                     {
                         vm = new ConnectedNodeViewModel(node);
                         Nodes.Add(vm);
                     }
                     included.Add(vm);
                 }
-                foreach (var vm in Nodes.ToList())
+                foreach(var vm in Nodes.ToList())
                 {
-                    if (!included.Contains(vm))
+                    if(!included.Contains(vm))
                         Nodes.Remove(vm);
                 }
-                foreach (var vm in Nodes)
+                foreach(var vm in Nodes)
                 {
                     vm.UpdateSpeed();
                 }
                 await Task.Delay(1000);
             }
         }
+
+
 
         private readonly ObservableCollection<ConnectedNodeViewModel> _Nodes = new ObservableCollection<ConnectedNodeViewModel>();
         public ObservableCollection<ConnectedNodeViewModel> Nodes
@@ -183,10 +209,10 @@ namespace NBitcoin.SPVSample
             }
             set
             {
-                if (value != _SelectedNode)
+                if(value != _SelectedNode)
                 {
                     _SelectedNode = value;
-                    if (PropertyChanged != null)
+                    if(PropertyChanged != null)
                         PropertyChanged(this, new PropertyChangedEventArgs("SelectedNode"));
                 }
             }

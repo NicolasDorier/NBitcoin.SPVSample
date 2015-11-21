@@ -46,8 +46,9 @@ namespace NBitcoin.SPVSample
                     {
                         RequiredServices = NodeServices.Network //Needed for SPV
                     });
+                    _Group.MaximumNodeConnection = 4;
                     _Group.Connect();
-                    _ConnectionParameters = _Group.NodeConnectionParameters;
+                    _ConnectionParameters = parameters;
                 }
             });
 
@@ -55,8 +56,11 @@ namespace NBitcoin.SPVSample
             PeriodicUiUpdate();
             PeriodicKick();
 
-            foreach (var wallet in Wallets)
-                wallet.Wallet.Connect(_ConnectionParameters);
+            foreach(var wallet in Wallets)
+            {
+                wallet.Wallet.Configure(_Group);
+                wallet.Wallet.Connect();
+            }
         }
 
 
@@ -230,8 +234,11 @@ namespace NBitcoin.SPVSample
             if (SelectedWallet == null)
                 SelectedWallet = walletVm;
             walletVm.Save();
-            if (_ConnectionParameters != null)
-                wallet.Connect(_ConnectionParameters);
+            if(_ConnectionParameters != null)
+            {
+                wallet.Configure(_ConnectionParameters);
+                wallet.Connect();
+            }
         }
 
         private string _Message;

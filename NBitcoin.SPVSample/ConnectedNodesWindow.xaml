@@ -30,6 +30,10 @@
                 <Label Content="{Binding ConnectedAt}"></Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
+                <Label>Current Progress:</Label>
+                <Label Content="{Binding CurrentProgress}"></Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <Label>Last seen:</Label>
                 <Label Content="{Binding LastSeen}"></Label>
             </StackPanel>

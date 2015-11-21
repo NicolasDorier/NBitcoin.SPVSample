@@ -25,7 +25,7 @@ namespace NBitcoin.SPVSample
             InitializeComponent();
             root.DataContext = new MainWindowViewModel();
         }
-
+        
         public MainWindowViewModel ViewModel
         {
             get

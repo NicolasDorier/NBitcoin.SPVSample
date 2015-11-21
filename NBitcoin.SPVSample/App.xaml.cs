@@ -19,7 +19,7 @@ namespace NBitcoin.SPVSample
         {
             get
             {
-                return Network.TestNet;
+                return Network.Main;
             }
         }
 
